@@ -11,11 +11,12 @@ RUN apt-get -yqq install git && \
     apt-get -yqq install automake && \
     apt-get -yqq install libtool && \
     apt-get -yqq install autogen && \
-    apt-get -yqq install intltool 
-
+    apt-get -yqq install intltool && \
+    apt-get -yqq install libpmi2-0-dev
 ENV FC=ifort
 ENV CC=icx
 ENV hdf5="hdf5-1.12.0"  
+ENV I_MPI_PMI_LIBRARY=/usr/lib/x86_64-linux-gnu/libpmi2.so
 RUN  wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/${hdf5}/src/${hdf5}.tar.gz && \
     tar xzf  ${hdf5}.tar.gz
 WORKDIR /opt/${hdf5}
