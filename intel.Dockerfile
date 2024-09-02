@@ -1,5 +1,7 @@
 FROM intel/oneapi-hpckit
 WORKDIR /opt
+RUN wget -qO - https://repositories.intel.com/gpu/intel-graphics.key | \
+gpg --yes --dearmor --output /usr/share/keyrings/intel-graphics-archive-keyring.gpg
 RUN apt-get -yqq update
 RUN apt-get -yqq upgrade
 RUN apt-get -yqq install git && \
