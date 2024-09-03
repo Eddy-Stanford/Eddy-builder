@@ -1,10 +1,10 @@
-name: Test GNU Build & Deploy
+name: Test GNU and GNU+DEV Build 
 
 on:
   pull-request:
     branches: [ "main" ]
-jobs:
 
+jobs:
   test-gnu:
     runs-on: ubuntu-latest
     steps:

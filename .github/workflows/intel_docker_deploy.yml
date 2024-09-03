@@ -1,4 +1,4 @@
-name: Test Intel Build 
+name: Deploy ntel Build 
 
 on:
   push:

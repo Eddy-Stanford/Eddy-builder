@@ -1,7 +1,8 @@
-name: Test GNU Build 
+name: Deploy GNU Build and GNU+DEV Build
 
 on:
   push:
+    branches: [ "main" ]
 jobs:
 
   build-gnu:
@@ -26,7 +27,7 @@ jobs:
         push: true
         tags: robcking/eddy-builder-gnu:latest
         file: gnu.Dockerfile
-        
+
     - name: Build and push DEV Image
       uses: docker/build-push-action@v6
       with:
