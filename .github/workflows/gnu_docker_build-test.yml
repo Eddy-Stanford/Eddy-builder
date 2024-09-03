@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the GNU Docker image
-      run: docker build . --file gnu.Dockerfile -t eddy-builder-gnu
+      run: docker build . --file gnu.Dockerfile -t robcking/eddy-builder-gnu
 
     - name: Build the GNU+DEV Docker image
-      run: docker build . --file gnu_dev.Dockerfile -t eddy-builder-gnu-dev
+      run: docker build . --file gnu_dev.Dockerfile -t robcking/eddy-builder-gnu-dev
