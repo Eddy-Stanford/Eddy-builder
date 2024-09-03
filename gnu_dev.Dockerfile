@@ -1,4 +1,4 @@
-FROM eddy-builder-gnu
+FROM eddy-builder-gnu:latest
 RUN apt update
 RUN apt install -y gdb &&\
     apt install -y pipx
