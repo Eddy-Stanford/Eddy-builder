@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:latest
 WORKDIR /opt
 RUN apt-get -yqq update
 RUN apt-get -yqq upgrade
