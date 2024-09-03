@@ -1,4 +1,4 @@
-name: Deploy ntel Build 
+name: Deploy Intel Build 
 
 on:
   push:
