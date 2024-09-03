@@ -1,9 +1,41 @@
+<<<<<<< HEAD
 FROM intel/oneapi-hpckit
 WORKDIR /opt
 RUN wget -qO - https://repositories.intel.com/gpu/intel-graphics.key | \
 gpg --yes --dearmor --output /usr/share/keyrings/intel-graphics-archive-keyring.gpg
+=======
+FROM ubuntu:latest
+SHELL ["/bin/bash", "-c"] 
+>>>>>>> 1476157 (using ubuntu as base, remove unneeded gloop)
 RUN apt-get -yqq update
 RUN apt-get -yqq upgrade
+RUN apt-get -yqq install ca-certificates && \
+    apt-get -yqq install curl &&\
+    apt-get -yqq install gpg &&\
+    apt-get -yqq install build-essential
+
+RUN curl -Lo- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --yes --dearmor -o /usr/share/keyrings/oneapi-archive-keyring.gpg
+RUN echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list 
+RUN apt-get -yqq update
+RUN apt-get -yqq install intel-oneapi-compiler-fortran=2024.2.1-1079 &&\
+    apt-get -yqq install intel-oneapi-compiler-dpcpp-cpp=2024.2.1-1079
+ENV INTEL_PYTHONHOME=/opt/intel/oneapi/debugger/2024.2/opt/debugger
+ENV PATH=/opt/intel/oneapi/mpi/2021.13/bin:/opt/intel/oneapi/debugger/2024.2/opt/debugger/bin:/opt/intel/oneapi/compiler/2024.2/bin:${PATH}
+ENV LIBRARY_PATH=/opt/intel/oneapi/mpi/2021.13/lib:/opt/intel/oneapi/compiler/2024.2/lib
+ENV CMAKE_PREFIX_PATH=/opt/intel/oneapi/compiler/2024.2
+ENV CMPLR_ROOT=/opt/intel/oneapi/compiler/2024.2
+ENV INFOPATH=/opt/intel/oneapi/debugger/2024.2/share/info
+ENV CLASSPATH=/opt/intel/oneapi/mpi/2021.13/share/java/mpi.jar
+ENV ONEAPI_ROOT=/opt/intel/oneapi
+ENV PKG_CONFIG_PATH=/opt/intel/oneapi/mpi/2021.13/lib/pkgconfig:/opt/intel/oneapi/compiler/2024.2/lib/pkgconfig
+ENV I_MPI_ROOT=/opt/intel/oneapi/mpi/2021.13
+ENV MANPATH=/opt/intel/oneapi/mpi/2021.13/share/man:/opt/intel/oneapi/debugger/2024.2/share/man:/opt/intel/oneapi/compiler/2024.2/share/man:
+ENV FI_PROVIDER_PATH=/opt/intel/oneapi/mpi/2021.13/opt/mpi/libfabric/lib/prov:/usr/lib/x86_64-linux-gnu/libfabric
+ENV DIAGUTIL_PATH=/opt/intel/oneapi/debugger/2024.2/etc/debugger/sys_check/sys_check.py:/opt/intel/oneapi/compiler/2024.2/etc/compiler/sys_check/sys_check.sh
+ENV GDB_INFO=/opt/intel/oneapi/debugger/2024.2/share/info/
+ENV OCL_ICD_FILENAMES=/opt/intel/oneapi/compiler/2024.2/lib/libintelocl.so
+ENV NLSPATH=/opt/intel/oneapi/compiler/2024.2/lib/compiler/locale/%l_%t/%N
+ENV LD_LIBRARY_PATH=/opt/intel/oneapi/mpi/2021.13/opt/mpi/libfabric/lib:/opt/intel/oneapi/mpi/2021.13/lib:/opt/intel/oneapi/debugger/2024.2/opt/debugger/lib:/opt/intel/oneapi/compiler/2024.2/opt/compiler/lib:/opt/intel/oneapi/compiler/2024.2/lib
 RUN apt-get -yqq install git && \
     apt-get -yqq install make && \
     apt-get -yqq install wget && \
@@ -15,16 +47,18 @@ RUN apt-get -yqq install git && \
     apt-get -yqq install autogen && \
     apt-get -yqq install intltool && \
     apt-get -yqq install libpmi2-0-dev
+
 ENV FC=ifort
 ENV CC=icx
 ENV hdf5="hdf5-1.12.0"  
-
+RUN ifort --version
+WORKDIR /opt
 ##LIBPMI2 is needed for SLURM to play nicely wth the containers on sherlock
 ENV I_MPI_PMI_LIBRARY=/usr/lib/x86_64-linux-gnu/libpmi2.so
 RUN  wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/${hdf5}/src/${hdf5}.tar.gz && \
     tar xzf  ${hdf5}.tar.gz
 WORKDIR /opt/${hdf5}
-RUN ./configure FC=ifort CC=icx LDFLAGS='-lz' --prefix=/opt/hdf5 --enable-fortran && \
+RUN ./configure FC=ifort CC=gcc LDFLAGS='-lz' --prefix=/opt/hdf5 --enable-fortran && \
     make install 
 WORKDIR /opt
 RUN rm ${hdf5}.tar.gz && rm -rf ${hdf5}
