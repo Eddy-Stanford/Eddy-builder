@@ -5,10 +5,12 @@ on:
     branches: [ "main" ]
 jobs:
 
-  build:
+  test-gnu:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Build the Docker image
+    - name: Build the GNU Docker image
       run: docker build . --file gnu.Dockerfile -t eddy-builder-gnu
 
+    - name: Build the GNU+DEV Docker image
+      run: docker build . --file gnu_dev.Dockerfile -t eddy-builder-gnu-dev
