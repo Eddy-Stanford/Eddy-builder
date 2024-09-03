@@ -40,8 +40,8 @@ RUN apt-get -yqq install git && \
     apt-get -yqq install autogen && \
     apt-get -yqq install intltool && \
     apt-get -yqq install libpmi2-0-dev && \
-    apt-get -yqq install pkg-config
-
+    apt-get -yqq install pkg-config && \
+    apt-get -yqq install python3-dev
 ENV FC=ifort
 ENV CC=icx
 ENV hdf5="hdf5-1.12.0"  

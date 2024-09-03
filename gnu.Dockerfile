@@ -12,11 +12,12 @@ RUN apt install -y git && \
     apt install -y libtool && \
     apt install -y autogen && \
     apt install -y intltool && \
+    apt install -y mpich &&\ 
     apt install -y libpmi2-0-dev &&\
     apt install -y gcc &&\
     apt install -y gfortran &&\
     apt install -y pkg-config &&\
-    apt install -y mpich 
+    apt install -y python3-dev
 ENV FC=gfortran
 ENV CC=gcc
 ENV hdf5="hdf5-1.12.0"
