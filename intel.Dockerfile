@@ -39,12 +39,13 @@ RUN apt-get -yqq install git && \
     apt-get -yqq install libtool && \
     apt-get -yqq install autogen && \
     apt-get -yqq install intltool && \
-    apt-get -yqq install libpmi2-0-dev
+    apt-get -yqq install libpmi2-0-dev && \
+    apt-get -yqq install pkg-config
 
 ENV FC=ifort
 ENV CC=icx
 ENV hdf5="hdf5-1.12.0"  
-RUN ifort --version
+
 WORKDIR /opt
 ##LIBPMI2 is needed for SLURM to play nicely wth the containers on sherlock
 ENV I_MPI_PMI_LIBRARY=/usr/lib/x86_64-linux-gnu/libpmi2.so
@@ -70,8 +71,10 @@ RUN  ./configure --prefix=/opt/netcdf-c CPPFLAGS='-I/opt/hdf5/include -I${IO_LIB
 
 ENV LD_LIBRARY_PATH=/opt/netcdf-c/lib:${LD_LIBRARY_PATH}
 ENV PATH=/opt/netcdf-c/bin:${PATH}
-ENV NETCDF_INC=/opt/netcdf-c/include
+ENV NETCDF_C_INCLUDE_DIRS=/opt/netcdf-c/include
 ENV NETCDF_LIB=/opy/netcdf-c/lib
+ENV PKG_CONFIG_PATH=/opt/netcdf-c/lib/pkgconfig:${PKG_CONFIG_PATH}
+
 WORKDIR /opt
 RUN rm ${netcdfc}.tar.gz && rm -rf ${netcdfc}
 ENV netcdff="netcdf-fortran-4.5.3"
@@ -84,8 +87,9 @@ RUN ./configure CPPFLAGS="-I/opt/netcdf-c/include -I/opt/hdf5/include/" LDFLAGS=
 ENV PATH=/opt/netcdf-fortran/bin:${PATH}
 ENV LD_LIBRARY_PATH=/opt/netcdf-c/lib:/opt/hdf5/lib:/opt/netcdf-fortran/lib:${LD_LIBRARY_PATH}
 ENV LIBRARY_PATH=${LD_LIBRARY_PATH}
-ENV NETCDF_FORTRAN_INC=/opt/netcdf-fortran/include
+ENV NETCDF_FORTRAN_INCLUDE_DIRS=/opt/netcdf-fortran/include
 ENV NETCDF_FORTRAN_LIB=/opt/netcdf-fortran/lib 
+ENV PKG_CONFIG_PATH=/opt/netcdf-fortran/lib/pkgconfig:${PKG_CONFIG_PATH}
 WORKDIR /opt
 RUN rm ${netcdff}.tar.gz && rm -rf ${netcdff}
 

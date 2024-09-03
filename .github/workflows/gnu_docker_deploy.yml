@@ -1,4 +1,4 @@
-name: Deploy GNU Build and GNU+DEV Build
+name: Deploy GNU/GNU+DEV 
 
 on:
   push:
