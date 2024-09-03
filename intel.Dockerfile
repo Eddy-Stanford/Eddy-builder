@@ -45,7 +45,7 @@ RUN apt-get -yqq install git && \
 ENV FC=ifort
 ENV CC=icx
 ENV hdf5="hdf5-1.12.0"  
-RUN ifort --version
+
 WORKDIR /opt
 ##LIBPMI2 is needed for SLURM to play nicely wth the containers on sherlock
 ENV I_MPI_PMI_LIBRARY=/usr/lib/x86_64-linux-gnu/libpmi2.so
