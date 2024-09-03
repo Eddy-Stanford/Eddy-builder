@@ -1,12 +1,5 @@
-<<<<<<< HEAD
-FROM intel/oneapi-hpckit
-WORKDIR /opt
-RUN wget -qO - https://repositories.intel.com/gpu/intel-graphics.key | \
-gpg --yes --dearmor --output /usr/share/keyrings/intel-graphics-archive-keyring.gpg
-=======
 FROM ubuntu:latest
 SHELL ["/bin/bash", "-c"] 
->>>>>>> 1476157 (using ubuntu as base, remove unneeded gloop)
 RUN apt-get -yqq update
 RUN apt-get -yqq upgrade
 RUN apt-get -yqq install ca-certificates && \
