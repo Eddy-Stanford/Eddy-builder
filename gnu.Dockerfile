@@ -12,11 +12,13 @@ RUN apt install -y git && \
     apt install -y libtool && \
     apt install -y autogen && \
     apt install -y intltool && \
+    apt install -y mpich &&\ 
     apt install -y libpmi2-0-dev &&\
     apt install -y gcc &&\
     apt install -y gfortran &&\
     apt install -y pkg-config &&\
-    apt install -y mpich 
+    apt install -y python3-dev &&\
+    apt install -y cmake
 ENV FC=gfortran
 ENV CC=gcc
 ENV hdf5="hdf5-1.12.0"
@@ -46,6 +48,7 @@ ENV LD_LIBRARY_PATH=/opt/netcdf-c/lib:${LD_LIBRARY_PATH}
 ENV PATH=/opt/netcdf-c/bin:${PATH}
 ENV NETCDF_C_INCLUDE_DIRS=/opt/netcdf-c/include
 ENV NETCDF_LIB=/opy/netcdf-c/lib
+ENV NETCDF_C_ROOT=/opt/netcdf-c 
 ENV PKG_CONFIG_PATH=/opt/netcdf-c/lib/pkgconfig:${PKG_CONFIG_PATH}
 WORKDIR /opt
 RUN rm ${netcdfc}.tar.gz && rm -rf ${netcdfc}
@@ -62,6 +65,7 @@ ENV PATH=/opt/netcdf-fortran/bin:${PATH}
 ENV LD_LIBRARY_PATH=/opt/netcdf-c/lib:/opt/hdf5/lib:/opt/netcdf-fortran/lib:${LD_LIBRARY_PATH}
 ENV LIBRARY_PATH=${LD_LIBRARY_PATH}
 ENV NETCDF_FORTRAN_INCLUDE_DIRS=/opt/netcdf-fortran/include
+ENV NETCDF_Fortran_ROOT=/opt/netcdf-fortran
 ENV NETCDF_FORTRAN_LIB=/opt/netcdf-fortran/lib 
 ENV PKG_CONFIG_PATH=/opt/netcdf-fortran/lib/pkgconfig:${PKG_CONFIG_PATH}
 WORKDIR /opt
