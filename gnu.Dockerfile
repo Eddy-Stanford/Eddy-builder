@@ -12,22 +12,31 @@ RUN apt install -y git && \
     apt install -y libtool && \
     apt install -y autogen && \
     apt install -y intltool && \
-    apt install -y mpich &&\ 
-    apt install -y libpmi2-0-dev &&\
     apt install -y gcc &&\
+    apt install -y g++ && \
     apt install -y gfortran &&\
+    apt install -y libpmi2-0-dev &&\
     apt install -y pkg-config &&\
     apt install -y python3-dev &&\
     apt install -y cmake
 ENV FC=gfortran
 ENV CC=gcc
-ENV hdf5="hdf5-1.12.0"
+## MPICH
+ENV MPICH_VERSION="4.2.2"
+RUN  wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz && tar xfz mpich-${MPICH_VERSION}.tar.gz
+WORKDIR /opt/mpich-${MPICH_VERSION}
+RUN ./configure --prefix=/opt/mpich && make -j`nproc` && make -j`nproc` install
+WORKDIR /opt
+RUN rm mpich-${MPICH_VERSION}.tar.gz && rm -rf mpich-${MPICH_VERSION}
+ENV LD_LIBRARY_PATH=/opt/mpich/lib:${LD_LIBRARY_PATH}
+ENV PATH=/opt/mpich/bin:${PATH}
 ### HDF5 
+ENV hdf5="hdf5-1.12.0"
 RUN  wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/${hdf5}/src/${hdf5}.tar.gz && \
     tar xzf  ${hdf5}.tar.gz
 WORKDIR /opt/${hdf5}
 RUN ./configure FC=gfortran CC=gcc LDFLAGS='-lz' --prefix=/opt/hdf5 --enable-fortran && \
-    make install 
+    make -j`nproc` install 
 WORKDIR /opt
 RUN rm ${hdf5}.tar.gz && rm -rf ${hdf5}
 ENV HDF5_INC=/opt/hdf5/include
@@ -41,8 +50,8 @@ RUN  wget -O ${netcdfc}.tar.gz https://github.com/Unidata/netcdf-c/archive/v4.7.
 
 WORKDIR /opt/${netcdfc}
 RUN  ./configure --prefix=/opt/netcdf-c CPPFLAGS='-I/opt/hdf5/include -I${IO_LIBS}/include' LDFLAGS='-L/opt/hdf5/lib -L/opt/io_libs/lib -lz' --disable-dap && \
-    make && \
-    make install 
+    make -j`nproc` && \
+    make -j`nproc` install 
 
 ENV LD_LIBRARY_PATH=/opt/netcdf-c/lib:${LD_LIBRARY_PATH}
 ENV PATH=/opt/netcdf-c/bin:${PATH}
@@ -59,8 +68,8 @@ RUN wget -O ${netcdff}.tar.gz https://github.com/Unidata/netcdf-fortran/archive/
     tar xzf ${netcdff}.tar.gz 
 WORKDIR /opt/${netcdff}
 RUN ./configure CPPFLAGS="-I/opt/netcdf-c/include -I/opt/hdf5/include/" LDFLAGS="-L/opt/netcdf-c/lib -lnetcdf" --prefix=/opt/netcdf-fortran && \
-    make && \
-    make -j20 install
+    make -j`nproc` && \
+    make -j`nproc` install
 ENV PATH=/opt/netcdf-fortran/bin:${PATH}
 ENV LD_LIBRARY_PATH=/opt/netcdf-c/lib:/opt/hdf5/lib:/opt/netcdf-fortran/lib:${LD_LIBRARY_PATH}
 ENV LIBRARY_PATH=${LD_LIBRARY_PATH}
@@ -78,6 +87,6 @@ WORKDIR /opt/udunits-2.2.28
 
 RUN apt-get install -yqq libexpat1-dev
 RUN ./configure CPPFLAGS="-I/opt/netcdf-c/include -I/opt/hdf5/include/ -I/opt/netcdf-fortran/include" LDFLAGS="-L/opt/netcdf-c/lib -lnetcdf -L/opt/netcdf-fortran/lib -lnetcdff"  --prefix=/opt/udunits && \
-    make && \
-    make install 
+    make -j`nproc` && \
+    make -j`nproc` install 
 WORKDIR /
