@@ -25,11 +25,11 @@ ENV CC=gcc
 ENV MPICH_VERSION="4.2.2"
 RUN  wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz && tar xfz mpich-${MPICH_VERSION}.tar.gz
 WORKDIR /opt/mpich-${MPICH_VERSION}
-RUN ./configure && make -j`nproc` && make -j`nproc` install
+RUN ./configure --prefix=/opt/mpich && make -j`nproc` && make -j`nproc` install
 WORKDIR /opt
 RUN rm mpich-${MPICH_VERSION}.tar.gz && rm -rf mpich-${MPICH_VERSION}
-
-
+ENV LD_LIBRARY_PATH=/opt/mpich/lib:${LD_LIBRARY_PATH}
+ENV PATH=/opt/mpich/bin:${PATH}
 ### HDF5 
 ENV hdf5="hdf5-1.12.0"
 RUN  wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/${hdf5}/src/${hdf5}.tar.gz && \
