@@ -50,6 +50,8 @@ ENV hdf5="hdf5-1.12.0"
 WORKDIR /opt
 ##LIBPMI2 is needed for SLURM to play nicely wth the containers on sherlock
 ENV I_MPI_PMI_LIBRARY=/usr/lib/x86_64-linux-gnu/libpmi2.so
+
+## HDF5
 RUN  wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/${hdf5}/src/${hdf5}.tar.gz && \
     tar xzf  ${hdf5}.tar.gz
 WORKDIR /opt/${hdf5}
@@ -61,6 +63,7 @@ ENV HDF5_INC=/opt/hdf5/include
 ENV HDF5_LIB=/opt/hdf5/lib
 ENV LD_LIBRARY_PATH=/opt/hdf5/lib:${LD_LIBRARY_PATH}
 
+## NETCDF-C
 ENV netcdfc="netcdf-c-4.7.4"
 RUN  wget -O ${netcdfc}.tar.gz https://github.com/Unidata/netcdf-c/archive/v4.7.4.tar.gz && \
     tar xzf ${netcdfc}.tar.gz 
@@ -74,10 +77,13 @@ ENV LD_LIBRARY_PATH=/opt/netcdf-c/lib:${LD_LIBRARY_PATH}
 ENV PATH=/opt/netcdf-c/bin:${PATH}
 ENV NETCDF_C_INCLUDE_DIRS=/opt/netcdf-c/include
 ENV NETCDF_LIB=/opy/netcdf-c/lib
+ENV NETCDF_C_ROOT=/opt/netcdf-c
 ENV PKG_CONFIG_PATH=/opt/netcdf-c/lib/pkgconfig:${PKG_CONFIG_PATH}
 
 WORKDIR /opt
 RUN rm ${netcdfc}.tar.gz && rm -rf ${netcdfc}
+
+## NETCDF-Fortran
 ENV netcdff="netcdf-fortran-4.5.3"
 RUN wget -O ${netcdff}.tar.gz https://github.com/Unidata/netcdf-fortran/archive/v4.5.3.tar.gz && \
     tar xzf ${netcdff}.tar.gz 
@@ -90,10 +96,12 @@ ENV LD_LIBRARY_PATH=/opt/netcdf-c/lib:/opt/hdf5/lib:/opt/netcdf-fortran/lib:${LD
 ENV LIBRARY_PATH=${LD_LIBRARY_PATH}
 ENV NETCDF_FORTRAN_INCLUDE_DIRS=/opt/netcdf-fortran/include
 ENV NETCDF_FORTRAN_LIB=/opt/netcdf-fortran/lib 
+ENV NETCDF_Fortran_ROOT=/opt/netcdf-fortran
 ENV PKG_CONFIG_PATH=/opt/netcdf-fortran/lib/pkgconfig:${PKG_CONFIG_PATH}
 WORKDIR /opt
 RUN rm ${netcdff}.tar.gz && rm -rf ${netcdff}
 
+## udunits
 RUN wget -O udunits-2.2.28.tar.gz https://downloads.unidata.ucar.edu/udunits/2.2.28/udunits-2.2.28.tar.gz && \
     tar xzf udunits-2.2.28.tar.gz 
 WORKDIR /opt/udunits-2.2.28
