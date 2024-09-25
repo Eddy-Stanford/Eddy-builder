@@ -11,7 +11,8 @@ RUN curl -Lo- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PR
 RUN echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list 
 RUN apt-get -yqq update
 RUN apt-get -yqq install intel-oneapi-compiler-fortran=2024.2.1-1079 &&\
-    apt-get -yqq install intel-oneapi-compiler-dpcpp-cpp=2024.2.1-1079
+    apt-get -yqq install intel-oneapi-compiler-dpcpp-cpp=2024.2.1-1079 &&\
+    apt-get -yqq install intel-oneapi-mkl-devel
 ENV INTEL_PYTHONHOME=/opt/intel/oneapi/debugger/2024.2/opt/debugger
 ENV PATH=/opt/intel/oneapi/mpi/2021.13/bin:/opt/intel/oneapi/debugger/2024.2/opt/debugger/bin:/opt/intel/oneapi/compiler/2024.2/bin:${PATH}
 ENV LIBRARY_PATH=/opt/intel/oneapi/mpi/2021.13/lib:/opt/intel/oneapi/compiler/2024.2/lib
@@ -110,4 +111,7 @@ RUN apt-get install -yqq libexpat1-dev
 RUN ./configure CPPFLAGS="-I/opt/netcdf-c/include -I/opt/hdf5/include/ -I/opt/netcdf-fortran/include" LDFLAGS="-L/opt/netcdf-c/lib -lnetcdf -L/opt/netcdf-fortran/lib -lnetcdff"  --prefix=/opt/udunits && \
     make && \
     make install 
+
+ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/intel/oneapi/mkl/2024.2/lib
+ENV LIBRARY_PATH=${LIBRARY_PATH}:/opt/intel/oneapi/mkl/2024.2/lib
 WORKDIR /
