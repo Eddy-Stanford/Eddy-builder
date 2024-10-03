@@ -43,6 +43,8 @@ RUN apt-get -yqq install git && \
     apt-get -yqq install libpmi2-0-dev && \
     apt-get -yqq install pkg-config && \
     apt-get -yqq install python3-dev &&\
+    apt install -y libevent-dev && \
+    apt install -y libopenblas-dev && \
     apt-get -yqq install cmake
 ENV FC=ifort
 ENV CC=icx

@@ -15,33 +15,25 @@ RUN apt install -y git && \
     apt install -y gcc &&\
     apt install -y g++ && \
     apt install -y gfortran &&\
-    apt install -y libpmi2-0-dev &&\
-    apt install -y pkg-config &&\
+    apt install -y libopenmpi-dev && \
     apt install -y libevent-dev && \
     apt install -y libopenblas-dev && \
+    apt install -y pkg-config &&\
     apt install -y python3-dev &&\
     apt install -y cmake
 ENV FC=gfortran
 ENV CC=gcc
-## MPICH
-ENV MPICH_VERSION="4.2.2"
-RUN  wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz && tar xfz mpich-${MPICH_VERSION}.tar.gz
-WORKDIR /opt/mpich-${MPICH_VERSION}
-RUN ./configure --prefix=/opt/mpich && make -j`nproc` && make -j`nproc` install
-WORKDIR /opt
-RUN rm mpich-${MPICH_VERSION}.tar.gz && rm -rf mpich-${MPICH_VERSION}
-ENV LD_LIBRARY_PATH=/opt/mpich/lib:${LD_LIBRARY_PATH}
-ENV PATH=/opt/mpich/bin:${PATH}
+
 ### HDF5 
 ENV hdf5="hdf5-1.12.0"
 RUN  wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/${hdf5}/src/${hdf5}.tar.gz && \
     tar xzf  ${hdf5}.tar.gz
 WORKDIR /opt/${hdf5}
-RUN ./configure FC=gfortran CC=gcc LDFLAGS='-lz' --prefix=/opt/hdf5 --enable-fortran && \
+RUN ./configure FC=mpifort CC=mpicc LDFLAGS='-lz' --prefix=/opt/hdf5 --enable-fortran && \
     make -j`nproc` install 
 WORKDIR /opt
 RUN rm ${hdf5}.tar.gz && rm -rf ${hdf5}
-ENV HDF5_INC=/opt/hdf5/include
+ENV HDF5_INC=/opt/hdf5/includeg
 ENV HDF5_LIB=/opt/hdf5/lib
 ENV LD_LIBRARY_PATH=/opt/hdf5/lib:${LD_LIBRARY_PATH}
 
@@ -91,4 +83,5 @@ RUN apt-get install -yqq libexpat1-dev
 RUN ./configure CPPFLAGS="-I/opt/netcdf-c/include -I/opt/hdf5/include/ -I/opt/netcdf-fortran/include" LDFLAGS="-L/opt/netcdf-c/lib -lnetcdf -L/opt/netcdf-fortran/lib -lnetcdff"  --prefix=/opt/udunits && \
     make -j`nproc` && \
     make -j`nproc` install 
+RUN rm udunits-2.2.28.tar.gz
 WORKDIR /
