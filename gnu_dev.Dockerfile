@@ -1,6 +1,9 @@
-FROM robcking/eddy-builder-gnu:latest
+FROM robcking/eddy_builder:gnu_mpich
 RUN apt update
 RUN apt install -y gdb &&\
     apt install -y pipx 
 RUN pipx install fortls && pipx ensurepath
-WORKDIR /
+RUN useradd -ms /bin/bash eddy
+USER eddy
+RUN . /opt/spack/share/spack/setup-env.sh
+WORKDIR /home/eddy

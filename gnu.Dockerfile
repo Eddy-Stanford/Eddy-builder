@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:jammy
 WORKDIR /opt
 RUN apt-get -yqq update
 RUN apt-get -yqq upgrade
