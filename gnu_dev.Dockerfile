@@ -1,5 +1,6 @@
 FROM robcking/eddy_builder:gnu_mpich
 RUN apt update
+RUN RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata
 RUN apt install -y gdb &&\
     apt install -y pipx 
 RUN pipx install fortls && pipx ensurepath
