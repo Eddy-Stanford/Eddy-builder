@@ -12,6 +12,7 @@ RUN apt-get -yqq install openmpi-bin libopenmpi-dev openmpi-common
 RUN apt-get -yqq install libnetcdf-mpi-dev libnetcdff-dev libhdf5-openmpi-dev
 RUN apt-get -yqq install libopenblas64-dev
 RUN apt-get -yqq install libudunits2-0 libudunits2-dev libudunits2-data
+RUN apt-get -yqq install libyaml-dev
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata
 ENV FC=gfortran
 ENV CC=gcc
