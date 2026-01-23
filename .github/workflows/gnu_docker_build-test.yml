@@ -10,7 +10,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the GNU Docker image
-      run: docker build . --file gnu.Dockerfile -t robcking/eddy-builder-gnu
+      run: docker build . --file gnu.Dockerfile -t robcking/eddy_builder:gnu_mpich
+
+    - uses: actions/checkout@v4
+    - name: Build the GNU Docker image (openmpi)
+      run: docker build . --file gnu_openmpi.Dockerfile -t robcking/eddy_builder:gnu_openmpi
 
     - name: Build the GNU+DEV Docker image
-      run: docker build . --file gnu_dev.Dockerfile -t robcking/eddy-builder-gnu-dev
+      run: docker build . --file gnu_dev.Dockerfile -t robcking/eddy_builder_dev:gnu_mpich
+
+    - uses: actions/checkout@v4
+    - name: Build the GNUDEV Docker image (openmpi)
+      run: docker build . --file gnu_dev_openmpi.Dockerfile -t robcking/eddy_builder_dev:gnu_opempi

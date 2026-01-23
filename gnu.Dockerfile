@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:jammy
 WORKDIR /opt
 RUN apt-get -yqq update
 RUN apt-get -yqq upgrade
@@ -17,6 +17,8 @@ RUN apt install -y git && \
     apt install -y gfortran &&\
     apt install -y libpmi2-0-dev &&\
     apt install -y pkg-config &&\
+    apt install -y libevent-dev && \
+    apt install -y libopenblas-dev && \
     apt install -y python3-dev &&\
     apt install -y cmake
 ENV FC=gfortran

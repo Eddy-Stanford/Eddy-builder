@@ -23,5 +23,5 @@ jobs:
       with:
         platforms: linux/amd64
         push: true
-        tags: robcking/eddy-builder:latest
+        tags: robcking/eddy_builder:intel
         file: intel.Dockerfile

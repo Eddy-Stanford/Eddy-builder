@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:jammy
 SHELL ["/bin/bash", "-c"] 
 RUN apt-get -yqq update
 RUN apt-get -yqq upgrade
@@ -43,6 +43,7 @@ RUN apt-get -yqq install git && \
     apt-get -yqq install libpmi2-0-dev && \
     apt-get -yqq install pkg-config && \
     apt-get -yqq install python3-dev &&\
+    apt install -y libevent-dev && \
     apt-get -yqq install cmake
 ENV FC=ifort
 ENV CC=icx
